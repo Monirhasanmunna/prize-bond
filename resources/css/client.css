@@ -1,0 +1,112 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+@import 'tailwindcss';
+
+@theme {
+    --font-roboto: "Roboto", sans-serif;
+    --font-poppins: "Poppins", sans-serif;
+}
+
+
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+/* Styling for Swiper wrapper */
+.mySwiper {
+    width: 100%;
+    /*padding: 20px 0;*/
+}
+
+/* Styling individual Swiper slides */
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*border-radius: 10px;*/
+    /*transition: transform 0.3s ease, box-shadow 0.3s ease;*/
+}
+
+/* Centered active slide effect (bigger) */
+/*.swiper-slide-active {*/
+/*    transform: scale(1.2);*/
+/*    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);*/
+/*}*/
+
+/* Styling the image inside each Swiper slide */
+.swiper-slide img {
+    /*border-radius: 12px;*/
+    transition: transform 0.3s ease;
+}
+
+/* Image hover effect */
+/*.swiper-slide:hover img {*/
+/*    transform: scale(1.05);*/
+/*}*/
+
+/* Text overlay at the bottom of the image */
+
+/* Navigation buttons styling (optional if you want customization) */
+
+/* Adjusting small screen responsiveness */
+@media (max-width: 768px) {
+    .swiper-slide-active {
+        transform: scale(1.1);
+    }
+}
+
+@media (max-width: 1200px) {
+    .container {
+        width: 90%;
+    }
+}
+
+/* For medium devices (tablets) */
+@media (max-width: 768px) {
+    .container {
+        width: 92%;
+    }
+}
+
+/* For small devices (phones) */
+@media (max-width: 576px) {
+    .container {
+        width: 96%;
+    }
+}
+
+.ql-editor {
+    font-family: "Poppins", sans-serif;
+}
+
+.ql-align-center {
+    text-align: center;
+}
+.ql-align-right {
+    text-align: right;
+}
+.ql-align-justify {
+    text-align: justify;
+}
+
+
+.nav_link{
+    @apply relative flex justify-center items-center text-[#2A2A2A]
+    after:content-[''] after:absolute after:bottom-[-2px] after:left-0
+    after:h-[2px] after:bg-[#F90101] after:w-0
+    after:transition-all after:duration-300
+    hover:after:w-full dark:text-[#F90101]
+}
+
+.nav_link.active {
+    @apply after:w-full text-[#F90101];
+}
+
+.nav-items{
+    @apply w-full h-[47px] flex justify-center items-center text-[#2B3C50] hover:bg-[#F25C30] hover:text-[#FFFFFF] duration-150 cursor-pointer rounded-[20px]
+}

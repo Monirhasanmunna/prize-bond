@@ -1,0 +1,161 @@
+@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
+@config '../../tailwind.config.js';
+
+
+/* Preline UI */
+@import "../../node_modules/preline/variants.css";
+@source "../../node_modules/preline/dist/*.js";
+
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;700&family=Questrial&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(0, 106, 106);
+}
+/* width */
+
+::-webkit-scrollbar {
+    width: 7px;
+    height: 5px;
+}
+/* Track */
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+    background: rgb(1, 173, 173);
+    border-radius: 2px;
+}
+/* Handle on hover */
+
+@layer base {
+    body {
+        @apply font-sans;
+    }
+}
+
+/* Table Wrapper */
+.table-container {
+    @apply flex flex-col;
+}
+
+.table-scroll {
+    @apply -m-1.5 overflow-x-auto;
+}
+
+.table-wrapper {
+    @apply p-1.5 min-w-full inline-block align-middle;
+}
+
+.table-border {
+    @apply border border-gray-200 rounded-md overflow-hidden dark:border-neutral-400;
+}
+
+/* Table Styles */
+.table-base {
+    @apply min-w-full border-collapse;
+}
+
+/* Header Row */
+.table-header {
+    @apply bg-gray-200 dark:bg-neutral-600;
+}
+
+/* Header Cells */
+.th-cell {
+    @apply px-6 py-2 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-200 border border-gray-200 dark:border-neutral-400;
+}
+
+.th-cell-end {
+    @apply px-6 py-2 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-200 border border-gray-200 dark:border-neutral-400;
+}
+
+/* Table Row */
+.tr-body {
+    @apply hover:bg-gray-100 dark:hover:bg-neutral-600;
+}
+
+/* Body Cells */
+.td-cell {
+    @apply px-6 py-2 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200 border border-gray-200 dark:border-neutral-400;
+}
+
+.td-cell-bold {
+    @apply px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200 border border-gray-200 dark:border-neutral-400;
+}
+
+.td-cell-end {
+    @apply px-6 py-2 whitespace-nowrap text-end text-sm font-medium border border-gray-200 dark:border-neutral-400;
+}
+
+.inner-box {
+    @apply w-full p-5 mt-8 border border-gray-300 dark:border-gray-400 shadow rounded;
+}
+
+/*form css start*/
+.form-control{
+    @apply w-full space-y-1.5 flex flex-col;
+}
+
+.label{
+    @apply text-[15px] font-semibold text-gray-600 dark:text-gray-100;
+}
+
+.input {
+    @apply w-full py-[6px] border rounded-[2px] border-gray-400 focus:outline-none focus:ring-0 placeholder:text-[16px] placeholder:text-gray-400 dark:bg-[#4c5056] dark:text-gray-200;
+}
+/*form css end*/
+
+/*quil text editor*/
+.custom-editor .ql-editor {
+    min-height: 100px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.ql-toolbar {
+    border-color: #99A1AF !important;
+}
+.ql-container {
+    border-color: #99A1AF !important;
+}
+
+
+@layer utilities {
+    .bg-stripes {
+        background-image: repeating-linear-gradient(
+            45deg,
+            #f3f4f6 0,
+            #f3f4f6 5px,
+            #ffffff 5px,
+            #ffffff 9px
+        );
+    }
+
+    @keyframes stripes {
+        0% {
+            background-position: 0 0;
+        }
+        100% {
+            background-position: 16px 0;
+        }
+    }
+
+    .animate-stripes {
+        animation: stripes 0.8s linear infinite;
+    }
+}
+
+
+
+
+
+
+
+
