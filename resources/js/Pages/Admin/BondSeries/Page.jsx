@@ -13,6 +13,7 @@ import {FaPencil} from "react-icons/fa6";
 import {FaTrash} from "react-icons/fa";
 import {HSOverlay} from "preline";
 import Form from "@/Components/Segment/Admin/Series/From.jsx";
+import {MdEditSquare} from "react-icons/md";
 
 
 export default function Page({data: bondSeriesListData}){
@@ -195,12 +196,12 @@ export default function Page({data: bondSeriesListData}){
                                                 }
                                             </td>
                                             <td className="px-4 py-2 font-medium text-gray-800 dark:text-neutral-200 border border-neutral-300 dark:border-neutral-400">
-                                                <div className="w-full flex gap-x-6">
-                                                    <button className="cursor-pointer text-white border-green-500"
+                                                <div className="w-full flex gap-x-3">
+                                                    <button className="cursor-pointer text-white border-green-600"
                                                             onClick={() => editSeries(series)}>
-                                                        <FaPencil className={`text-blue-400 text-lg`}/>
+                                                        <MdEditSquare className={`text-blue-400 text-lg`}/>
                                                     </button>
-                                                    <button className=" cursor-pointer text-white border-green-500"
+                                                    <button className=" cursor-pointer text-white border-green-600"
                                                             onClick={() => alert(series.id)}>
                                                         <FaTrash className={`text-red-400 text-lg`}/>
                                                     </button>
