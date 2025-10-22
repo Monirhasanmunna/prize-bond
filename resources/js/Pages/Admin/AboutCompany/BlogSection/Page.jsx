@@ -12,7 +12,7 @@ import Alert from "@/Components/Utils/Alert/Alert.jsx";
 import {FaPencil} from "react-icons/fa6";
 import {FaTrash} from "react-icons/fa";
 import {HSOverlay} from "preline";
-import BlogForm from "@/Components/Segment/Backend/AboutCompany/Blog/BlogFrom.jsx";
+// import BlogForm from "@/Components/Segment/Backend/AboutCompany/Blog/BlogFrom.jsx";
 import truncate from "html-truncate";
 
 
