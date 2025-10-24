@@ -26,7 +26,7 @@ class PrizeBondService
             }
 
             if (!array_key_exists('graph', $query)) {
-                $query['graph'] = '{*}';
+                $query['graph'] = '{bond_series_id,price,code}';
             }
 
             $dbQuery = PrizeBond::where('user_id', Auth::id());
@@ -45,7 +45,6 @@ class PrizeBondService
             return $this->response([
                 'bonds' => $bonds,
                 'count' => $count,
-                'bondStatus' => commonStatus(),
                 ...$query
             ])->success();
         }
@@ -72,6 +71,42 @@ class PrizeBondService
     }
 
 
+
+    /**
+     * @param array $payload
+     * @return array
+     */
+    public function bulkStoreData (array $payload): array
+    {
+        try {
+            $parts = preg_split('/\s+/', trim($payload['start_prize_bond_number']));
+
+            if(is_array($parts) && count($parts) > 1) {
+                $seriesCode = reset($parts);
+                $startNumber = end($parts);
+            }
+            else {
+                $seriesCode = substr($payload['start_prize_bond_number'], 0, 2);
+                $startNumber = substr($payload['start_prize_bond_number'], 2);
+            }
+
+            if(!empty($startNumber)){
+                for ($i = 0; $i < (int) $payload['total_bond']; $i++) {
+                    PrizeBond::create( $this->_formatedPrizeBondCreatedData( [
+                        'bond_series_id' => $payload['bond_series_id'],
+                        'price' => $payload['price'],
+                        'code' => $seriesCode . (int) $startNumber + $i,
+                    ]));
+                }
+            }
+
+            return $this->response()->success('Prize bond created successfully');
+
+        } catch (\Exception $exception) {
+            return $this->response()->error($exception->getMessage());
+        }
+    }
+
     /**
      * @param array $payload
      * @return array
@@ -93,27 +128,6 @@ class PrizeBondService
         }
     }
 
-
-    /**
-     * @param array $payload
-     * @return array
-     */
-    public function changeStatus (array $payload): array
-    {
-        try {
-            $bond = PrizeBond::where('id', $payload['id'])->where('user_id', Auth::id())->first();
-            if (!$bond) {
-                return $this->response()->error("Prize bond not found");
-            }
-
-            $bond->update(['status' => $payload['status']]);
-
-            return $this->response(['series' => $bond])->success('Prize bond Status Updated Successfully');
-        }
-        catch (\Exception $exception) {
-            return $this->response()->error($exception->getMessage());
-        }
-    }
 
     /**
      * @param string $id
