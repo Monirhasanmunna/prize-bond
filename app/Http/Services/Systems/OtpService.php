@@ -7,6 +7,7 @@ use App\Mail\Auth\VerificationOtpMail;
 use App\Models\EmailOtp;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -42,29 +43,34 @@ class OtpService
      */
     public function generate(string $email, string $type): string
     {
-        // Check throttling
+        try {
+            // Check throttling
 //        $this->enforceResendThrottle($email, $type);
 
-        // Invalidate any existing active OTPs for this email+type
-        $this->invalidateAll($email, $type);
+            // Invalidate any existing active OTPs for this email+type
+            $this->invalidateAll($email, $type);
 
-        // Generate 6-digit OTP
-        $otp = str_pad((string) random_int(100000, 999999), 6, '0', STR_PAD_LEFT);
+            // Generate 6-digit OTP
+            $otp = str_pad((string) random_int(100000, 999999), 6, '0', STR_PAD_LEFT);
 
-        // Store hashed OTP
-        EmailOtp::create([
-            'email' => $email,
-            'code_hash' => Hash::make($otp),
-            'type' => $type,
-            'expires_at' => Carbon::now()->addMinutes(self::OTP_EXPIRATION_MINUTES),
-            'attempts' => 0,
-            'sent_at' => Carbon::now(),
-        ]);
+            // Store hashed OTP
+            EmailOtp::create([
+                'email' => $email,
+                'code_hash' => Hash::make($otp),
+                'type' => $type,
+                'expires_at' => Carbon::now()->addMinutes(self::OTP_EXPIRATION_MINUTES),
+                'attempts' => 0,
+                'sent_at' => Carbon::now(),
+            ]);
 
-        // Send email based on type
-        $this->sendOtpEmail($email, $otp, $type);
+            // Send email based on type
+            $this->sendOtpEmail($email, $otp, $type);
 
-        return $otp;
+            return $otp;
+        }
+        catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
     }
 
     /**
