@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\User\VerifyOtpRequest;
 use App\Http\Requests\User\Auth\ForgotPasswordRequest;
 use App\Http\Requests\User\Auth\LoginRequest;
+use App\Http\Requests\User\Auth\PasswordUpdateRequest;
 use App\Http\Requests\User\Auth\RegistrationRequest;
 use App\Http\Requests\User\Auth\ResendOtpRequest;
 use App\Http\Requests\User\Auth\ResetPasswordRequest;
@@ -69,5 +70,14 @@ class AuthController extends Controller
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
         return response()->json($this->service->reset( $request->all()));
+    }
+
+    /**
+     * @param PasswordUpdateRequest $request
+     * @return JsonResponse
+     */
+    public function changePassword(PasswordUpdateRequest $request): JsonResponse
+    {
+        return response()->json($this->service->changePassword( $request->all()));
     }
 }

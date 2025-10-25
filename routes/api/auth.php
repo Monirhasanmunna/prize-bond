@@ -9,3 +9,4 @@ Route::post('/customer/login', [AuthController::class, 'login']);
 Route::post('/customer/resend-otp', [AuthController::class, 'resendOtp']);
 Route::post('/customer/forgot-password', [AuthController::class, 'sendOtp']);
 Route::post('/customer/reset-password', [AuthController::class, 'resetPassword']);
+Route::post('/customer/change-password', [AuthController::class, 'changePassword'])->middleware('auth:sanctum');

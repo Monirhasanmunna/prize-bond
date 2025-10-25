@@ -236,6 +236,34 @@ class AuthService
      * @param array $payload
      * @return array
      */
+    public function changePassword(array $payload): array
+    {
+        try {
+            $user = User::where('id', Auth::id())->where('role', ROLE_USER)->first();
+
+            if(!$user){
+                return $this->response()->error('Not authenticated');
+            }
+
+            if(!Hash::check($payload['old_password'], $user->password)){
+                $this->response()->error('Old password is incorrect');
+            }
+
+            $user->password = Hash::make($payload['new_password']);
+            $user->save();
+
+            return $this->response()->success('Password has been changed successfully.');
+        }
+        catch (\Exception $exception){
+            return $this->response()->error($exception->getMessage());
+        }
+    }
+
+
+    /**
+     * @param array $payload
+     * @return array
+     */
     private function formatRegisterData(array $payload): array
     {
         $data = [

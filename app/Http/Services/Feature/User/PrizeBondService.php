@@ -26,7 +26,7 @@ class PrizeBondService
             }
 
             if (!array_key_exists('graph', $query)) {
-                $query['graph'] = '{bond_series_id,price,code}';
+                $query['graph'] = '{price,code,series{name}}';
             }
 
             $dbQuery = PrizeBond::where('user_id', Auth::id());
