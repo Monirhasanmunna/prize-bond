@@ -246,7 +246,7 @@ class AuthService
             }
 
             if(!Hash::check($payload['old_password'], $user->password)){
-                $this->response()->error('Old password is incorrect');
+                return $this->response()->error('Old password is incorrect');
             }
 
             $user->password = Hash::make($payload['new_password']);
