@@ -22,7 +22,7 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nid' => 'nullable|string|unique:users,nid',
+            'nid' => 'nullable|string|unique:users,nid,'.$this->user()->id,
             'name' => 'nullable|string',
             'phone' => 'nullable|string|regex:/^([0-9\s\-\+\(\)]*)$/|min:11',
             'image' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,svg|max:5112',
