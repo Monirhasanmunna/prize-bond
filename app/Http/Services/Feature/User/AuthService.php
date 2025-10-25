@@ -260,6 +260,7 @@ class AuthService
     }
 
 
+
     /**
      * @param array $payload
      * @return array

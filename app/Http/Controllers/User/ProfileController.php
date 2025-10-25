@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\Profile\ProfileUpdateRequest;
 use App\Http\Services\Feature\User\ProfileService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
@@ -18,5 +19,14 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): JsonResponse
     {
         return response()->json( $this->service->update( $request->all()));
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function edit(Request $request): JsonResponse
+    {
+        return response()->json( $this->service->edit( $request->query()));
     }
 }
