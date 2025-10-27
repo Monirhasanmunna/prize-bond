@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('status', 20)->default(STATUS_ACTIVE);
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('bond_series_id')->references('id')->on('bond_series');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('bond_series_id')->references('id')->on('bond_series')->ondelete('cascade');
         });
     }
 
