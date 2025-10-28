@@ -52,7 +52,6 @@ export default function Page({data: drawListData}){
     }, [go]);
 
 
-
     const alert = (id) => {
         setAlertData({
             ...alertData,
