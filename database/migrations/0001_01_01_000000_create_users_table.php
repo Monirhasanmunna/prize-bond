@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('referral_code')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('fcm_token')->nullable();
             $table->string('role', 20)->default(ROLE_USER);
             $table->rememberToken();
             $table->timestamps();

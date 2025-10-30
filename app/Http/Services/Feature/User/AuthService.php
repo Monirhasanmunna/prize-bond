@@ -119,6 +119,29 @@ class AuthService
         }
     }
 
+
+    /**
+     * @param array $payload
+     * @return array
+     */
+    public function storeUserFcmToken(array $payload): array
+    {
+        try {
+            $user = auth()->user();
+            if(!$user){
+                return $this->response()->error('User not found');
+            }
+
+            $user->update(['fcm_token' => $payload['fcm_token']]);
+
+            return $this->response(['user' => $user])->success('Fcm updated');
+        }
+        catch (\Exception $exception) {
+            return $this->response()->error($exception->getMessage());
+        }
+    }
+
+
     /**
      * @param array $payload
      * @return array
