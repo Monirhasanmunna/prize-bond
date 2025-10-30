@@ -26,16 +26,17 @@ class SendNotificationService
             ->createMessaging();
     }
 
+
     /**
      * @param $token
      * @param $title
      * @param $body
-     * @param $data
+     * @param array $data
      * @return mixed[]
      * @throws FirebaseException
      * @throws MessagingException
      */
-    public function sendToToken($token, $title, $body, $data = [])
+    public function sendToToken($token, $title, $body, array $data = []): array
     {
         $message = CloudMessage::withTarget('token', $token)
             ->withNotification(Notification::create($title, $body))
