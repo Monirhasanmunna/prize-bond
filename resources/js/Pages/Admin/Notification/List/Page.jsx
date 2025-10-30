@@ -76,7 +76,7 @@ export default function Page({data: notificationListData}){
                             </svg>
                         </li>
                         <li className="flex items-center text-sm text-gray-800 dark:text-neutral-400">
-                            Draw
+                            Notification
                             <svg className="shrink-0 mx-3 overflow-visible size-2.5 text-gray-400 dark:text-neutral-500" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M5 1L10.6869 7.16086C10.8637 7.35239 10.8637 7.64761 10.6869 7.83914L5 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                             </svg>
@@ -90,7 +90,7 @@ export default function Page({data: notificationListData}){
                 <div className="w-full border border-gray-300 rounded mt-5">
                     <div className="flex items-center justify-between border-b border-gray-300 px-5 py-3">
                         <div className="flex items-center gap-x-6">
-                            <h2 className="font-medium text-xl leading-6 text-neutral-500 dark:text-neutral-300">Draw</h2>
+                            <h2 className="font-medium text-xl leading-6 text-neutral-500 dark:text-neutral-300">Notification</h2>
                         </div>
                         <Link href={route('admin.notification.create')} className="py-1.5 px-5 inline-flex items-center gap-x-2 text-sm font-medium rounded bg-blue-600 text-white hover:bg-blue-700">
                             Add New

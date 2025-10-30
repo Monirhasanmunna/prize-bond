@@ -78,25 +78,26 @@ class NotificationService
             $users = User::whereNotNull('fcm_token')->get();
 
             foreach ($users as $user) {
-
                 UserNotification::create([
                     'user_id'        => $user->id,
                     'notification_id'=> $notification->id,
                 ]);
 
-
                 $this->sendNotificationService->sendToToken(
                     $user->fcm_token,
                     $notification->title,
                     $notification->description,
+                    [
+                        'notification_id' => $notification->id,
+                    ]
                 );
             }
-
 
             DB::commit();
             return $this->response()->success('Notification created successfully');
 
-        } catch (\Exception $exception) {
+        }
+        catch (\Exception $exception) {
             DB::rollBack();
             return $this->response()->error($exception->getMessage());
         }

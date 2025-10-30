@@ -22,7 +22,7 @@ class SendNotificationService
     public function __construct()
     {
         $this->messaging = (new Factory)
-            ->withServiceAccount(config('firebase.credentials.file'))
+            ->withServiceAccount(storage_path('app/firebase/service-account.json'))
             ->createMessaging();
     }
 

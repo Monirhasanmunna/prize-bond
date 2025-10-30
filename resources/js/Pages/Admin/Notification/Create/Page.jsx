@@ -6,9 +6,8 @@ import {FaArrowRight} from "react-icons/fa";
 
 export default function Page(){
     const {data, setData, errors, processing, post} = useForm({
-        name: '',
-        date: '',
-        file: ''
+        title: '',
+        description: '',
     })
 
     const handleInput = (e) => {
@@ -22,7 +21,7 @@ export default function Page(){
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        post(route('admin.draw.store'))
+        post(route('admin.notification.store'))
     }
 
     return (
@@ -37,7 +36,7 @@ export default function Page(){
                             </svg>
                         </li>
                         <li className="flex items-center text-sm text-gray-800 dark:text-neutral-400">
-                            Draw
+                            Notification
                             <svg className="shrink-0 mx-3 overflow-visible size-2.5 text-gray-400 dark:text-neutral-500" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M5 1L10.6869 7.16086C10.8637 7.35239 10.8637 7.64761 10.6869 7.83914L5 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                             </svg>
@@ -53,7 +52,7 @@ export default function Page(){
                         <div className="flex items-center gap-x-6">
                             <h2 className="font-medium text-xl leading-6 text-neutral-500 dark:text-neutral-300">Add New</h2>
                         </div>
-                        <Link href={route(`admin.draw.list`)} className="py-1.5 px-5 inline-flex items-center gap-x-2 text-sm font-medium rounded bg-blue-600 text-white hover:bg-blue-700">
+                        <Link href={route(`admin.notification.list`)} className="py-1.5 px-5 inline-flex items-center gap-x-2 text-sm font-medium rounded bg-blue-600 text-white hover:bg-blue-700">
                            Back
                         </Link>
                     </div>
@@ -62,27 +61,14 @@ export default function Page(){
                         <div className="w-full p-5 space-y-5">
                             <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="form-control">
-                                    <label htmlFor="name" className={`label`}>Name <span className={`text-xs`}> *</span></label>
-                                    <input type="text" id={`name`} value={data.name} onChange={handleInput} className={`input`} placeholder={`Enter draw name`}/>
-                                </div>
-                                <div className="form-control">
-                                    <label htmlFor="date" className={`label`}>Date <span className={`text-xs`}> *</span></label>
-                                    <input type="date" id={`date`} value={data.date} onChange={handleInput} className={`input`}/>
+                                    <label htmlFor="title" className={`label`}>Title <span className={`text-xs`}> *</span></label>
+                                    <input type="text" id={`title`} value={data.title} onChange={handleInput} className={`input`} placeholder={`Enter notification title`}/>
                                 </div>
                             </div>
-                            <div className="w-full grid grid-cols-1 gap-4">
-                                <div className="form-control">
-                                    <div className="w-full flex justify-between items-center">
-                                        <label htmlFor="file" className={`label`}>File Upload <span className={`text-xs`}> *</span></label>
-                                        <a href="/draw_winners_example.xlsx" download className={`text-blue-500 cursor-pointer text-sm font-bold flex items-center gap-1 mb-2`}>Download Example <FaArrowRight className={`size-3`} /></a>
-                                    </div>
-                                    <ExcelUploader
-                                        selectedFile={data.file}
-                                        onFileChange={(file) => setData("file", file)}
-                                    />
-                                </div>
+                            <div className="form-control">
+                                <label htmlFor="description" className={`label`}>Description <span className={`text-xs`}> *</span></label>
+                                <textarea name={`description`} rows={6} id={`description`} value={data.description} onChange={handleInput} className={`input`}></textarea>
                             </div>
-
                             <div className="w-full">
                                 <Button type={`submit`} buttonText={`Submit`} />
                             </div>
