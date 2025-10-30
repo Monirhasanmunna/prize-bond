@@ -22,7 +22,7 @@ class SendNotificationService
     public function __construct()
     {
         $this->messaging = (new Factory)
-            ->withServiceAccount(storage_path('app/firebase/service-account.json'))
+            ->withServiceAccount(base_path(env('FIREBASE_CREDENTIALS')))
             ->createMessaging();
     }
 
@@ -32,7 +32,7 @@ class SendNotificationService
      * @param $title
      * @param $body
      * @param array $data
-     * @return mixed[]
+     * @return array
      * @throws FirebaseException
      * @throws MessagingException
      */
