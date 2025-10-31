@@ -22,7 +22,7 @@ class SendNotificationService
     public function __construct()
     {
         $this->messaging = (new Factory)
-            ->withServiceAccount(base_path(env('FIREBASE_CREDENTIALS')))
+            ->withServiceAccount(public_path(env('FIREBASE_CREDENTIALS')))
             ->createMessaging();
     }
 
@@ -41,6 +41,8 @@ class SendNotificationService
         $message = CloudMessage::withTarget('token', $token)
             ->withNotification(Notification::create($title, $body))
             ->withData($data);
+
+        dd($this->messaging->send($message));
 
         return $this->messaging->send($message);
     }

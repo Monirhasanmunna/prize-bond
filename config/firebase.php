@@ -3,6 +3,10 @@
 declare(strict_types=1);
 
 return [
+
+//    'credentials' => [
+//        'file' => env('FIREBASE_CREDENTIALS'),
+//    ],
     /*
      * ------------------------------------------------------------------------
      * Default Firebase project
@@ -50,7 +54,8 @@ return [
              *
              */
 
-            'credentials' => env('FIREBASE_CREDENTIALS', env('GOOGLE_APPLICATION_CREDENTIALS')),
+//            'credentials' => env('FIREBASE_CREDENTIALS', env('GOOGLE_APPLICATION_CREDENTIALS')),
+            'credentials' => public_path(env('FIREBASE_CREDENTIALS')),
 
             /*
              * ------------------------------------------------------------------------

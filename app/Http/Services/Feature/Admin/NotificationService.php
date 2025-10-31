@@ -75,22 +75,24 @@ class NotificationService
             DB::beginTransaction();
             $notification = Notification::create( $this->_formatedNotificationCreatedData( $payload));
 
-            $users = User::whereNotNull('fcm_token')->get();
+            $users = User::whereNotNull('fcm_token')->where('role', ROLE_USER)->get();
 
             foreach ($users as $user) {
-                UserNotification::create([
-                    'user_id'        => $user->id,
-                    'notification_id'=> $notification->id,
-                ]);
+                if(!empty($user->fcm_token)){
+                    UserNotification::create([
+                        'user_id'        => $user->id,
+                        'notification_id'=> $notification->id,
+                    ]);
 
-                $this->sendNotificationService->sendToToken(
-                    $user->fcm_token,
-                    $notification->title,
-                    $notification->description,
-                    [
-                        'notification_id' => $notification->id,
-                    ]
-                );
+                    $this->sendNotificationService->sendToToken(
+                        $user->fcm_token,
+                        $notification->title,
+                        $notification->description,
+                        [
+                            'notification_id' => $notification->id,
+                        ]
+                    );
+                }
             }
 
             DB::commit();

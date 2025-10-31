@@ -7,6 +7,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Kreait\Firebase\Factory;
 
 
 Autoloader::loadFilesRecursivelyInDirs([__DIR__ . '/web/']);
@@ -17,45 +18,29 @@ Route::get('admin/dashboard', [DashboardController::class, 'Home'])->middleware(
 
 require __DIR__.'/auth.php';
 
+Route::get('/test-fcm', function (\App\Http\Services\Feature\User\SendNotificationService $fcm) {
+    $token = 'eLurOanbQA-04IvJ1f70BJ:APA91bHgsatgYEopEQQIQIvaZUgB-HwrrlAgGVSkN3jquHuUoddLhvQc1idlCT3BQj-636_Fe8FP5WTlMbdxAbY7vEth-hOpA5TB52tERGVQRL_zzdpzThc';
 
-//Clear Cache facade value:
-Route::get('/clear-cache', function() {
-    $exitCode = Artisan::call('cache:clear');
-    return '<h1>Cache facade value cleared</h1>';
+    $ok = $fcm->sendToToken(
+        $token,
+        'Laravel → Firebase',
+        'This is a test message',
+        ['click_action' => 'FLUTTER_NOTIFICATION_CLICK']
+    );
+
+    return $ok ? 'Sent ✅' : 'Failed ❌';
 });
 
-//Reoptimized class loader:
-Route::get('/optimize', function() {
-    $exitCode = Artisan::call('optimize');
-    return '<h1>Reoptimized class loader</h1>';
-});
 
-//Route cache:
-Route::get('/route-cache', function() {
-    $exitCode = Artisan::call('route:cache');
-    return '<h1>Routes cached</h1>';
-});
-
-//Clear Route cache:
-Route::get('/route-clear', function() {
-    $exitCode = Artisan::call('route:clear');
-    return '<h1>Route cache cleared</h1>';
-});
-
-//Clear View cache:
-Route::get('/view-clear', function() {
-    $exitCode = Artisan::call('view:clear');
-    return '<h1>View cache cleared</h1>';
-});
-
-//Clear Config cache:
-Route::get('/config-cache', function() {
-    $exitCode = Artisan::call('config:cache');
-    return '<h1>Clear Config cleared</h1>';
-});
-
-//Clear Config:
-Route::get('/config-clear', function() {
-    $exitCode = Artisan::call('config:clear');
-    return '<h1>Clear Config cleared</h1>';
-});
+//Route::get('/test-fcm', function (\App\Http\Services\Feature\User\RawNotification $fcm) {
+//    $token = 'eLurOanbQA-04IvJ1f70BJ:APA91bHgsatgYEopEQQIQIvaZUgB-HwrrlAgGVSkN3jquHuUoddLhvQc1idlCT3BQj-636_Fe8FP5WTlMbdxAbY7vEth-hOpA5TB52tERGVQRL_zzdpzThc';
+//
+//    $ok = $fcm->sendToToken(
+//        $token,
+//        'Laravel → Firebase',
+//        'This is a test message',
+//        ['click_action' => 'FLUTTER_NOTIFICATION_CLICK']
+//    );
+//
+//    return $ok ? 'Sent ✅' : 'Failed ❌';
+//});
