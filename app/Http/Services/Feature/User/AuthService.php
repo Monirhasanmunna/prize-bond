@@ -97,7 +97,7 @@ class AuthService
     {
         try {
             // Find user by email
-            $user = User::where('email', $payload['email'])->first();
+            $user = User::with('subscription')->where('email', $payload['email'])->first();
 
             // Check credentials
             if (!$user || !Hash::check($payload['password'], $user->password)) {
