@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\User;
-
 use App\Http\Controllers\Controller;
 use App\Http\Services\Feature\User\StatsService;
 use Illuminate\Http\JsonResponse;
@@ -19,5 +18,4 @@ class StatsController extends Controller
     {
         return response()->json( $this->service->getData( $request->query()));
     }
-
 }

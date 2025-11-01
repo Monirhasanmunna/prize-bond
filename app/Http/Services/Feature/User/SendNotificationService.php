@@ -42,7 +42,6 @@ class SendNotificationService
             ->withNotification(Notification::create($title, $body))
             ->withData($data);
 
-        dd($this->messaging->send($message));
 
         return $this->messaging->send($message);
     }
