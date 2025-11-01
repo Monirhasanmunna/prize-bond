@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Services\Feature\User;
 
+use App\Http\Services\Feature\PaymentGateway\PaystationService;
 use App\Models\Subscription;
 use App\Models\User;
 use App\Traits\Request;
@@ -8,10 +9,15 @@ use App\Traits\Response;
 use Bitsmind\GraphSql\Facades\QueryAssist;
 use Bitsmind\GraphSql\QueryAssist as QueryAssistTrait;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class SubscriptionService
 {
     use Request,Response, QueryAssistTrait;
+
+    public function __construct(private readonly PaystationService $paymentGateway){}
 
     /**
      * @param array $query
@@ -68,9 +74,24 @@ class SubscriptionService
                 return $this->response()->error("Subscription not found");
             }
 
-            $user->update(['subscription_id' => $subscription->id]);
+            $paymentInfo = [
+                'payment_amount' => (float) $subscription->discount_price > 0  ? $subscription->discount_price : $subscription->base_price,
+                'user_name'  => $user->name,
+                'user_phone' => $user->phone,
+                'cust_email' => $user->email,
+            ];
 
-            return $this->response(['user' => $user->fresh(['subscription'])])->success('Subscription purchased successfully');
+            $response = $this->paymentGateway->payment( $paymentInfo);
+            if($response['status_code'] === "200" && $response['status'] === 'success'){
+                Cache::put('payment_data', [
+                    'subscription_id' => $payload['subscription_id'],
+                    'user_id' => $user->id,
+                ], now()->addMinutes(10));
+
+                return $this->response(['payment_url' => $response['payment_url']])->success("Payment Link Created Successfully.");
+            }
+
+            return $this->response()->error('Payment Link Created Failed.');
         }
         catch (\Exception $exception) {
             return $this->response()->error($exception->getMessage());
