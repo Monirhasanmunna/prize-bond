@@ -19,4 +19,13 @@ class SubscriptionController extends Controller
     {
         return response()->json( $this->service->getListData( $request->query()));
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function purchaseSubscription(Request $request): JsonResponse
+    {
+        return response()->json( $this->service->purchaseSubscription( $request->all()));
+    }
 }

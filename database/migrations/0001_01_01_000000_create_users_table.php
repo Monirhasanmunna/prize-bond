@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->uuid('subscription_id')->nullable();
             $table->string('name');
             $table->string('image')->nullable();
             $table->string('email')->unique();
@@ -25,6 +26,8 @@ return new class extends Migration
             $table->string('role', 20)->default(ROLE_USER);
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('subscription_id')->references('id')->on('subscriptions')->onDelete('restrict')->onUpdate('cascade');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

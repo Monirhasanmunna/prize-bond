@@ -5,6 +5,7 @@ namespace App\Models;
  use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  use Illuminate\Database\Eloquent\Relations\HasMany;
  use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -34,7 +35,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'role',
         'password',
         'email_verified_at',
-        'fcm_token'
+        'fcm_token',
+        'subscription_id'
     ];
 
     /**
@@ -60,6 +62,14 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
+
+    /**
+     * @return BelongsTo
+     */
+    public function subscription(): BelongsTo
+    {
+        return $this->belongsTo(Subscription::class, 'subscription_id', 'id');
+    }
 
     /**
      * @return BelongsToMany
