@@ -31,7 +31,7 @@ class PaystationGatewayController extends Controller
     public function paymentSuccess(Request $request): array|Response
     {
         $response = $this->service->paymentSuccess( $request->query());
-        dd( $response );
+
         return $response['success'] ?
             Inertia::render('PaymentGateway/Paystation/Success', $response):
             $this->response()->error($response['message']);

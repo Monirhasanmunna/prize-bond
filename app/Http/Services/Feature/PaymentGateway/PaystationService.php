@@ -63,7 +63,7 @@ class PaystationService
 
             return $this->response([
                     'data' => [
-                        'amount' => $subscription->price,
+                        'amount' => (float) $subscription->discount_price > 0  ? $subscription->discount_price : $subscription->base_price,
                         'trx_id' => $query['invoice_number'],
                     ]
             ])->success("Subscription Purchased Successfully.");

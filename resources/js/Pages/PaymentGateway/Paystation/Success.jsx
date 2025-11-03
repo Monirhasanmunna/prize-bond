@@ -1,7 +1,8 @@
 import React from "react";
 
 export default function Success({data}){
-    const {amount, trx_id} = data
+    console.log(data)
+    const {amount, trx_id} = data.data
     return (
         <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-10">
             <div className="w-full max-w-[480px] bg-white rounded-2xl shadow-md border border-slate-100">
@@ -33,11 +34,11 @@ export default function Success({data}){
                 <div className="mt-7 mx-5 bg-slate-50 border border-slate-100 rounded-xl p-4 space-y-3">
                     <div className="flex items-center justify-between">
                         <p className="text-sm text-slate-500">Amount Paid</p>
-                        <p className="text-base font-semibold text-emerald-500">{amount}</p>
+                        <p className="text-base font-semibold text-emerald-500">BDT. {amount}</p>
                     </div>
                     <div className="flex items-center justify-between">
                         <p className="text-sm text-slate-500">Transaction ID</p>
-                        <p className="text-[0.75rem] font-mono bg-white px-2 py-1 rounded-md text-slate-700 border border-slate-200">
+                        <p className="text-[0.75rem] font-mono font-bold bg-white px-2 py-1 rounded-md text-slate-700 border border-slate-200">
                             {trx_id}
                         </p>
                     </div>
