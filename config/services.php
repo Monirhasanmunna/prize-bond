@@ -39,4 +39,8 @@ return [
         'project_id'     => env('FIREBASE_PROJECT_ID'),
         'service_account'=> public_path(env('FIREBASE_CREDENTIALS')),
     ],
+
+    'fcm' => [
+        'credentials' => storage_path('app/firebase/production-bond-notifier.json'),
+    ],
 ];

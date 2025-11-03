@@ -2,6 +2,7 @@
 namespace App\Http\Services\Feature\Admin;
 
 use App\Http\Services\Feature\User\SendNotificationService;
+use App\Jobs\SendFcmNotificationJob;
 use App\Models\Notification;
 use App\Models\User;
 use App\Models\UserNotification;
@@ -19,8 +20,6 @@ use Bitsmind\GraphSql\QueryAssist as QueryAssistTrait;
 class NotificationService
 {
     use Request,Response, QueryAssistTrait, FileSaver;
-
-    public function __construct(private readonly SendNotificationService $sendNotificationService){}
 
     /**
      * @param array $query
@@ -75,25 +74,7 @@ class NotificationService
             DB::beginTransaction();
             $notification = Notification::create( $this->_formatedNotificationCreatedData( $payload));
 
-            $users = User::whereNotNull('fcm_token')->where('role', ROLE_USER)->get();
-
-            foreach ($users as $user) {
-                if(!empty($user->fcm_token)){
-                    UserNotification::create([
-                        'user_id'        => $user->id,
-                        'notification_id'=> $notification->id,
-                    ]);
-
-                    $this->sendNotificationService->sendToToken(
-                        $user->fcm_token,
-                        $notification->title,
-                        $notification->description,
-                        [
-                            'notification_id' => $notification->id,
-                        ]
-                    );
-                }
-            }
+            SendFcmNotificationJob::dispatch($notification);
 
             DB::commit();
             return $this->response()->success('Notification created successfully');
