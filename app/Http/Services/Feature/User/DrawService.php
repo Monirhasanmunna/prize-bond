@@ -66,12 +66,13 @@ class DrawService
                 return $this->response()->error('Not Authorized');
             }
 
-            if (empty($payload['draw_id'])) {
-                return $this->response()->error('Draw ID is required.');
+            $draw = Draw::find($payload['draw_id']);
+            if (!$draw) {
+                return $this->response()->error('Draw not found.');
             }
 
             // Get all winners for the draw (with their details)
-            $winners = DrawWinner::where('draw_id', $payload['draw_id'])
+            $winners = DrawWinner::where('draw_id', $draw->id)
                 ->select('bond_number', 'prize_type', 'amount')
                 ->get();
 
@@ -88,10 +89,10 @@ class DrawService
             $userBonds = PrizeBond::where('user_id', $user->id)->get();
 
             // Filter the user’s bonds that match any winning number (by core digits)
-            $matched = $userBonds->filter(function ($bond) use ($winningMap) {
+            $matched = $userBonds->filter(function ($bond) use ($winningMap, $draw) {
                 $core = substr($bond->code, 2);
                 return $winningMap->has($core);
-            })->map(function ($bond) use ($winningMap) {
+            })->map(function ($bond) use ($winningMap, $draw) {
                 $core = substr($bond->code, 2);
                 $winnerInfo = $winningMap[$core];
 
@@ -99,6 +100,7 @@ class DrawService
                     'bond_number' => $bond->code,
                     'prize_type' => $winnerInfo['prize_type'],
                     'amount' => $winnerInfo['amount'],
+                    'draw_name' => $draw->name
                 ];
             })->values();
 
