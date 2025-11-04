@@ -18,22 +18,9 @@ Route::get('admin/dashboard', [DashboardController::class, 'Home'])->middleware(
 
 require __DIR__.'/auth.php';
 
-//Route::get('/test-fcm', function (\App\Http\Services\Feature\User\SendNotificationService $fcm) {
-//    $token = 'eLurOanbQA-04IvJ1f70BJ:APA91bHgsatgYEopEQQIQIvaZUgB-HwrrlAgGVSkN3jquHuUoddLhvQc1idlCT3BQj-636_Fe8FP5WTlMbdxAbY7vEth-hOpA5TB52tERGVQRL_zzdpzThc';
-//
-//    $ok = $fcm->sendToToken(
-//        $token,
-//        'Laravel → Firebase',
-//        'This is a test message',
-//        ['click_action' => 'FLUTTER_NOTIFICATION_CLICK']
-//    );
-//
-//    return $ok ? 'Sent ✅' : 'Failed ❌';
-//});
 
-
-Route::get('/test-fcm', function (\App\Http\Services\Feature\User\RawNotification $fcm) {
-    $token = 'eLurOanbQA-04IvJ1f70BJ:APA91bHgsatgYEopEQQIQIvaZUgB-HwrrlAgGVSkN3jquHuUoddLhvQc1idlCT3BQj-636_Fe8FP5WTlMbdxAbY7vEth-hOpA5TB52tERGVQRL_zzdpzThc';
+Route::get('/test-fcm', function (\App\Http\Services\Feature\Notification\FcmService $fcm) {
+    $token = 'fBuyuuz6Rv21cLN_UN9uk3:APA91bFTWwGmqx_RfkHsKQkOFweF1PJt9kIgZ24MVDFdCKSA71JCqTa88iBjnLuR1zvoC0kk4ChrIF6_q5eimKWXbiHacqahmONxi0hdKcZ_uRo3SJRUO6Y';
 
     $ok = $fcm->sendToToken(
         $token,

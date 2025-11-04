@@ -71,20 +71,9 @@ class FcmService
                         'sound' => 'default',
                     ],
                 ],
-                'apns' => [
-                    'payload' => [
-                        'aps' => [
-                            'sound' => 'default',
-                        ],
-                    ],
-                ],
+                'data' => $data,
             ]
         ];
-
-        $cleanData = $this->sanitizeData($data);
-        if (!empty($cleanData)) {
-            $payload['message']['data'] = $cleanData;
-        }
 
         $accessToken = $this->getAccessToken();
 
@@ -92,7 +81,7 @@ class FcmService
             ->acceptJson()
             ->post($endpoint, $payload);
 
-        Log::info('FCM Response: ' . $response->body());
+//        Log::info('FCM Response: ' . $response->body());
 
         return $response->json();
     }
@@ -106,6 +95,7 @@ class FcmService
             foreach ($chunk as $token) {
                 try {
                     $this->sendToToken($token, $title, $body, $data);
+                    Log::info('Send Notification');
                 } catch (\Throwable $e) {
                     Log::error('FCM send error for token '.$token.': '.$e->getMessage());
                 }

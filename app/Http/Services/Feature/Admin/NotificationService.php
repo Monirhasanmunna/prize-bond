@@ -74,11 +74,23 @@ class NotificationService
             DB::beginTransaction();
             $notification = Notification::create( $this->_formatedNotificationCreatedData( $payload));
 
-            SendFcmNotificationJob::dispatch($notification);
+            $users = User::whereNotNull('fcm_token')->where('role', ROLE_USER)->get();
+            $tokens = [];
+
+            foreach ($users as $user) {
+                if(!empty($user->fcm_token)){
+                    $tokens[] = $user->fcm_token;
+                    UserNotification::create([
+                        'user_id'        => $user->id,
+                        'notification_id'=> $notification->id,
+                    ]);
+                }
+            }
+
+            SendFcmNotificationJob::dispatch($notification, $tokens);
 
             DB::commit();
             return $this->response()->success('Notification created successfully');
-
         }
         catch (\Exception $exception) {
             DB::rollBack();

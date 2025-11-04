@@ -16,10 +16,14 @@ class SendFcmNotificationJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * Create a new job instance.
-     */
-    public function __construct(public Notification $notification) {}
+    public $notification;
+    public $tokens;
+
+    public function __construct(Notification $notification, array $tokens)
+    {
+        $this->notification = $notification;
+        $this->tokens = $tokens;
+    }
 
     /**
      * Execute the job.
@@ -28,7 +32,7 @@ class SendFcmNotificationJob implements ShouldQueue
     {
         $notification = $this->notification;
 
-        $tokens = User::whereNotNull('fcm_token')->pluck('fcm_token')->toArray();
+        $tokens = $this->tokens;
 
         if (empty($tokens)) return;
 
