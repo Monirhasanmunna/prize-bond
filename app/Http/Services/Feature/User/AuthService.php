@@ -112,6 +112,8 @@ class AuthService
             // Create Sanctum token
             $authorize = $this->authorize( $user);
 
+            $this->storeUserFcmToken( $payload);
+
             return $this->response(['user' => $authorize])->success('Logged in successfully.');
         }
         catch (\Exception $exception) {
@@ -124,7 +126,7 @@ class AuthService
      * @param array $payload
      * @return array
      */
-    public function storeUserFcmToken(array $payload): array
+    private function storeUserFcmToken(array $payload): array
     {
         try {
             $user = auth()->user();

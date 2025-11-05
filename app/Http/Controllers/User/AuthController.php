@@ -45,20 +45,6 @@ class AuthController extends Controller
         return response()->json($this->service->login( $request->all()));
     }
 
-
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function storeUserFcmToken(Request $request): JsonResponse
-    {
-        $request->validate([
-            'fcm_token' => 'required',
-        ]);
-
-        return response()->json($this->service->storeUserFcmToken( $request->all()));
-    }
-
     /**
      * @param ResendOtpRequest $request
      * @return JsonResponse
