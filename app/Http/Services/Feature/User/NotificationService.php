@@ -26,7 +26,7 @@ class NotificationService
                 return $this->response()->error('User not found');
             }
 
-            $notifications = $user->notifications()->orderBy('created_at', 'desc')->get()->select('id', 'title', 'description', 'created_at');
+            $notifications = $user->notifications()->orderBy('created_at', 'desc')->get();
 
             return $this->response([
                 'notifications' => $notifications,
