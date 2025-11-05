@@ -36,4 +36,30 @@ class NotificationService
             return $this->response()->error($exception->getMessage());
         }
     }
+
+
+    /**
+     * @param string $id
+     * @return array
+     */
+    public function getData (string $id): array
+    {
+        try {
+            $user = User::where('id', Auth::id())->firstOrFail();
+            if(!$user){
+                return $this->response()->error('User not found');
+            }
+
+            $notification = $user->notifications()
+                ->select('notifications.id', 'notifications.title', 'notifications.description', 'notifications.created_at')
+                ->find($id);
+
+            return $this->response([
+                'notification' => $notification,
+            ])->success();
+        }
+        catch (\Exception $exception) {
+            return $this->response()->error($exception->getMessage());
+        }
+    }
 }

@@ -20,4 +20,15 @@ class NotificationController extends Controller
     {
         return response()->json( $this->service->getListData( $request->query()));
     }
+
+
+    /**
+     * @param Request $request
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function getData(Request $request, string $id): JsonResponse
+    {
+        return response()->json( $this->service->getData( $id));
+    }
 }
