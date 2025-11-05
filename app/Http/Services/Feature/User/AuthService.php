@@ -112,7 +112,9 @@ class AuthService
             // Create Sanctum token
             $authorize = $this->authorize( $user);
 
-            $this->storeUserFcmToken( $payload);
+            if($payload['fcm_token']){
+                $this->storeUserFcmToken( $payload);
+            }
 
             return $this->response(['user' => $authorize])->success('Logged in successfully.');
         }
