@@ -109,12 +109,14 @@ class AuthService
                 return $this->response()->error('Please verify your email before logging in. Check your inbox for the verification code.');
             }
 
+            if(empty($payload['fcm_token'])){
+                return $this->response()->error('Fcm token is required.');
+            }
+
             // Create Sanctum token
             $authorize = $this->authorize( $user);
 
-            if($payload['fcm_token']){
-                $this->storeUserFcmToken( $payload);
-            }
+            $this->storeUserFcmToken( $payload);
 
             return $this->response(['user' => $authorize])->success('Logged in successfully.');
         }
