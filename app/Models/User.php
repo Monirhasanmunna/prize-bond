@@ -72,6 +72,14 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * @return HasMany
+     */
+    public function bonds(): HasMany
+    {
+        return $this->hasMany(PrizeBond::class, 'user_id', 'id');
+    }
+
+    /**
      * @return BelongsToMany
      */
     public function notifications(): BelongsToMany

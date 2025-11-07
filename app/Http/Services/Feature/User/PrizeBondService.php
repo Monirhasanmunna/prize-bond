@@ -2,6 +2,7 @@
 namespace App\Http\Services\Feature\User;
 
 use App\Models\PrizeBond;
+use App\Models\User;
 use App\Traits\FileSaver;
 use App\Traits\Request;
 use App\Traits\Response;
@@ -61,7 +62,16 @@ class PrizeBondService
     public function storeData (array $payload): array
     {
         try {
-            PrizeBond::create( $this->_formatedPrizeBondCreatedData( $payload));
+            $user = User::with('subscription')->where('id', Auth::id())->first();
+            if(!$user){
+                return $this->response()->error('User not found');
+            }
+
+            if(empty($user->subscription) && count($user->bonds) === 10){
+                return $this->response()->error('You need to purchase a subscription');
+            }
+
+            PrizeBond::create( $this->_formatedPrizeBondCreatedData( $payload, $user));
 
             return $this->response()->success('Prize bond created successfully');
 
@@ -71,7 +81,6 @@ class PrizeBondService
     }
 
 
-
     /**
      * @param array $payload
      * @return array
@@ -79,6 +88,15 @@ class PrizeBondService
     public function bulkStoreData (array $payload): array
     {
         try {
+            $user = User::with('subscription')->where('id', Auth::id())->first();
+            if(!$user){
+                return $this->response()->error('User not found');
+            }
+
+            if(empty($user->subscription) && (count($user->bonds) + (int) $payload['total_bond'] > 10)){
+                return $this->response()->error('You need to purchase a subscription');
+            }
+
             $parts = preg_split('/\s+/', trim($payload['start_prize_bond_number']));
 
             if(is_array($parts) && count($parts) > 1) {
@@ -96,7 +114,7 @@ class PrizeBondService
                         'bond_series_id' => $payload['bond_series_id'],
                         'price' => $payload['price'],
                         'code' => $seriesCode . (int) $startNumber + $i,
-                    ]));
+                    ], $user));
                 }
             }
 
@@ -153,12 +171,13 @@ class PrizeBondService
 
     /**
      * @param array $payload
+     * @param object $user
      * @return array
      */
-    private function _formatedPrizeBondCreatedData(array $payload): array
+    private function _formatedPrizeBondCreatedData(array $payload, object $user): array
     {
         return [
-            'user_id'           => Auth::id(),
+            'user_id'           => $user->id,
             'bond_series_id'    => $payload['bond_series_id'],
             'price'             => $payload['price'],
             'code'              => $payload['code'],
