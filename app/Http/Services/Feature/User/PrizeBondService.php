@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Services\Feature\User;
 
+use App\Models\BondSeries;
 use App\Models\PrizeBond;
 use App\Models\User;
 use App\Traits\FileSaver;
@@ -67,6 +68,11 @@ class PrizeBondService
                 return $this->response()->error('User not found');
             }
 
+            $series = BondSeries::where('id', $payload['bond_series_id'])->first();
+            if(!$series){
+                return $this->response()->error('Bond series not found');
+            }
+
             if(empty($user->subscription) && count($user->bonds) === 10){
                 return $this->response()->error('You need to purchase a subscription');
             }
@@ -91,6 +97,11 @@ class PrizeBondService
             $user = User::with('subscription')->where('id', Auth::id())->first();
             if(!$user){
                 return $this->response()->error('User not found');
+            }
+
+            $series = BondSeries::where('id', $payload['bond_series_id'])->first();
+            if(!$series){
+                return $this->response()->error('Bond series not found');
             }
 
             if(empty($user->subscription) && (count($user->bonds) + (int) $payload['total_bond'] > 10)){
