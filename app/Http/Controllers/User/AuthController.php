@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\User\VerifyOtpRequest;
 use App\Http\Requests\User\Auth\ForgotPasswordRequest;
+use App\Http\Requests\User\Auth\GoogleLoginRequest;
 use App\Http\Requests\User\Auth\LoginRequest;
 use App\Http\Requests\User\Auth\PasswordUpdateRequest;
 use App\Http\Requests\User\Auth\RegistrationRequest;
@@ -43,6 +44,16 @@ class AuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         return response()->json($this->service->login( $request->all()));
+    }
+
+
+    /**
+     * @param GoogleLoginRequest $request
+     * @return JsonResponse
+     */
+    public function googleLogin(GoogleLoginRequest $request): JsonResponse
+    {
+        return response()->json($this->service->googleLogin( $request->all()));
     }
 
     /**

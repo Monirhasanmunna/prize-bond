@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Traits\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class AuthService
@@ -112,6 +113,48 @@ class AuthService
             if(empty($payload['fcm_token'])){
                 return $this->response()->error('Fcm token is required.');
             }
+
+            // Create Sanctum token
+            $authorize = $this->authorize( $user);
+
+            $this->storeUserFcmToken( $payload, $user);
+
+            return $this->response(['user' => $authorize])->success('Logged in successfully.');
+        }
+        catch (\Exception $exception) {
+            return $this->response()->error($exception->getMessage());
+        }
+    }
+
+
+    /**
+     * @param array $payload
+     * @return array
+     */
+    public function googleLogin(array $payload): array
+    {
+        try {
+            $response = Http::get('https://oauth2.googleapis.com/tokeninfo', [
+                'id_token' => $payload['id_token'],
+            ]);
+
+            if ($response->failed()) {
+                return $this->response()->error('Invalid Google token');
+            }
+
+            $googleUser = $response->json();
+
+
+            $user = User::updateOrCreate(
+                ['email' => $googleUser['email']],
+                [
+                    'name' => $googleUser['name'] ?? $googleUser['email'],
+                    'google_id' => $googleUser['sub'],
+                    'image' => $googleUser['picture'] ?? null,
+                    'email_verified_at' => now(),
+                    'password' => bcrypt(12345678),
+                ]
+            );
 
             // Create Sanctum token
             $authorize = $this->authorize( $user);
